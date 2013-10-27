@@ -116,9 +116,9 @@
 		}
 
 		function isHit() {
-			if(	(bombOneTop == planeTop && bombOneLeft <= planeLeft) || 
-					(bombTwoTop == planeTop && bombTwoLeft <= planeLeft) || 
-					(bombThreeTop == planeTop && bombThreeLeft <= planeLeft)
+			if(	(bombOneTop == planeTop && bombOneLeft <= planeLeft && bombOneLeft + 30 > planeLeft) || 
+					(bombTwoTop == planeTop && bombTwoLeft <= planeLeft && bombTwoLeft + 30 > planeLeft) || 
+					(bombThreeTop == planeTop && bombThreeLeft <= planeLeft && bombThreeLeft + 30 > planeLeft)
 				) return true;
 			return false;
 		}
