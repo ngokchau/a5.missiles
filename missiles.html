@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+<head>
+	<title>Missiles</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+	<style>
+		body{
+			margin: 0;
+			padding: 0;
+		}
+
+		#canvas {
+			background: blue;
+			position: relative;
+			top: 100px;
+			margin: 0 auto;
+			width: 600px;
+			height: 60px;
+		}
+		#plane {
+			background: gray;
+			position: relative;
+			top: 0;
+			left: 0;
+			width: 20px;
+			height: 20px;
+		}
+		#bomb-1, #bomb-2, #bomb-3 {
+			background: url('missile.png') -11%;
+			-webkit-background-size: 100%;
+			background-size: 100%;
+			position: relative;
+			margin-top: -20px;
+			left: 600px;
+			width: 40px;
+			height: 20px;
+		}
+	</style>
+
+	<script>
+		var plane;
+		var planeLeft = 0;
+		var planeTop = 0;
+		var sizeX = 600;
+
+		var bombOne;
+		var bombOneLeft = 600;
+		var bombOneTop = 0;
+
+		var bombTwo
+		var bombTwoLeft = 600;
+		var bombTwoTop = 0;
+
+		var bombThree
+		var bombThreeLeft = 600;
+		var bombThreeTop = 0;
+
+		var speed = 30;
+		var timer;
+
+		function init() {
+			canvas = document.getElementById('canvas');
+			plane = document.getElementById('plane');
+			bombOne = document.getElementById('bomb-1');
+			bombTwo = document.getElementById('bomb-2');
+			bombThree = document.getElementById('bomb-3');
+
+			document.onkeydown = keyListener;
+
+			start();
+		}
+
+		function keyListener(e) {
+			if(!e) e = window.event;
+			if(e.keyCode == 40) movePlane("down");
+			if(e.keyCode == 38) movePlane("up");
+			if(e.keyCode == 39) movePlane("right");
+			if(e.keyCode == 37) movePlane("left");
+		}
+
+		function movePlane(dir) {
+			if(dir == "down") (planeTop < 40) ? planeTop += 20 : planeTop = 0;
+			if(dir == "up") (planeTop > 0) ? planeTop -= 20 : planeTop = 40;
+			if(dir == "right") (planeLeft <= sizeX - 20) ? planeLeft += 20 : planeLeft = 0;
+			if(dir == "left") (planeLeft > 0) ? planeLeft -= 20 : planeLeft = sizeX;
+
+			plane.style.top = planeTop + 'px';
+			plane.style.left = planeLeft + 'px';
+		}
+
+		function releaseBombOne() {
+			(bombOneLeft > 0) ? bombOneLeft -= 20 : bombOneLeft = 600;
+			if(bombOneLeft > sizeX - 20)
+				bombOneTop = (20 * Math.floor(Math.random()*3));
+
+			bombOne.style.left = bombOneLeft + 'px';
+			bombOne.style.top = bombOneTop + 'px';
+		}
+
+		function releaseBombTwo() {
+			(bombTwoLeft > 0) ? bombTwoLeft -= 25 : bombTwoLeft = 600;
+			if(bombTwoLeft > sizeX - 20)
+				bombTwoTop = (20 * Math.floor(Math.random()*3));
+
+			bombTwo.style.left = bombTwoLeft + 'px';
+			bombTwo.style.top = bombTwoTop + 'px';
+		}
+
+		function releaseBombThree() {
+			(bombThreeLeft > 0) ? bombThreeLeft -= 18 : bombThreeLeft = 600;
+			if(bombThreeLeft > sizeX - 20)
+				bombThreeTop = (20 * Math.floor(Math.random()*3));
+
+			bombThree.style.left = bombThreeLeft + 'px';
+			bombThree.style.top = bombThreeTop + 'px';
+		}
+
+		function isHit() {
+			if(	(bombOneTop == planeTop && bombOneLeft <= planeLeft) || 
+					(bombTwoTop == planeTop && bombTwoLeft <= planeLeft) || 
+					(bombThreeTop == planeTop && bombThreeLeft <= planeLeft)
+				) return true;
+			return false;
+		}
+
+		function start() {
+			if(isHit()){
+				clearTimeout(timer);
+				alert("Game Over");
+			} else {
+				releaseBombOne();
+				releaseBombTwo();
+				releaseBombThree();
+				timer = setTimeout('start()', speed);
+			}
+		}
+	</script>
+</head>
+
+<body onload="init();">
+
+<div id="canvas">
+	<div id="plane"></div>
+	<div id="bomb-1"></div>
+	<div id="bomb-2"></div>
+	<div id="bomb-3"></div>
+</div>
+
+</body>
+</html>
