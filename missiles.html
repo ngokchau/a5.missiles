@@ -9,16 +9,20 @@
 			padding: 0;
 		}
 
-		#canvas {
-			background: blue;
+		#canvas, #scoreboard {
+			border-top: 1px solid gray;
+			border-bottom: 1px solid gray;
 			position: relative;
 			top: 100px;
 			margin: 0 auto;
 			width: 600px;
 			height: 60px;
 		}
+		#scoreboard {
+			height: 20px;
+		}
 		#plane {
-			background: gray;
+			background: url('airplane.png') top;
 			position: relative;
 			top: 0;
 			left: 0;
@@ -38,6 +42,7 @@
 	</style>
 
 	<script>
+		var difficulty = prompt("Difficulty level: (E)asy, (M)oderate, (H)ard, (I)nsane");
 		var plane;
 		var planeLeft = 0;
 		var planeTop = 0;
@@ -55,7 +60,8 @@
 		var bombThreeLeft = 600;
 		var bombThreeTop = 0;
 
-		var speed = 30;
+		var speed = 9999;
+		var level = 0;
 		var timer;
 
 		function init() {
@@ -64,10 +70,25 @@
 			bombOne = document.getElementById('bomb-1');
 			bombTwo = document.getElementById('bomb-2');
 			bombThree = document.getElementById('bomb-3');
+			score = document.getElementById('score');
 
 			document.onkeydown = keyListener;
 
-			start();
+			if(difficulty.charAt(0) == "e") {
+				speed = 80;
+				setTimeout('start()', 1000);
+			} else if (difficulty.toLowerCase().charAt(0) == "m") {
+				speed = 60;
+				setTimeout('start()', 1000);
+			} else if (difficulty.toLowerCase().charAt(0) == "h") {
+				speed = 30;
+				setTimeout('start()', 1000);
+			} else if (difficulty.toLowerCase().charAt(0) == "i") {
+				speed = 20;
+				setTimeout('start()', 1000);
+			} else {
+				alert("Please input difficulty");
+			}
 		}
 
 		function keyListener(e) {
@@ -81,7 +102,13 @@
 		function movePlane(dir) {
 			if(dir == "down") (planeTop < 40) ? planeTop += 20 : planeTop = 0;
 			if(dir == "up") (planeTop > 0) ? planeTop -= 20 : planeTop = 40;
-			if(dir == "right") (planeLeft <= sizeX - 20) ? planeLeft += 20 : planeLeft = 0;
+			if(dir == "right") 
+				if(planeLeft <= sizeX - 20) {
+					planeLeft += 20;
+				} else {
+					level++;
+					planeLeft = 0;
+				}
 			if(dir == "left") (planeLeft > 0) ? planeLeft -= 20 : planeLeft = sizeX;
 
 			plane.style.top = planeTop + 'px';
@@ -115,6 +142,10 @@
 			bombThree.style.top = bombThreeTop + 'px';
 		}
 
+		function updateScore() {
+			score.innerHTML = "Score: " + level;
+		}
+
 		function isHit() {
 			if(	(bombOneTop == planeTop && bombOneLeft <= planeLeft && bombOneLeft + 30 > planeLeft) || 
 					(bombTwoTop == planeTop && bombTwoLeft <= planeLeft && bombTwoLeft + 30 > planeLeft) || 
@@ -131,6 +162,7 @@
 				releaseBombOne();
 				releaseBombTwo();
 				releaseBombThree();
+				updateScore();
 				timer = setTimeout('start()', speed);
 			}
 		}
@@ -144,6 +176,9 @@
 	<div id="bomb-1"></div>
 	<div id="bomb-2"></div>
 	<div id="bomb-3"></div>
+</div>
+<div id="scoreboard">
+	<span id="score"></span>
 </div>
 
 </body>
