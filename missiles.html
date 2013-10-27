@@ -9,7 +9,7 @@
 			padding: 0;
 		}
 
-		#canvas, #scoreboard {
+		#intro, #canvas, #scoreboard {
 			border-top: 1px solid gray;
 			border-bottom: 1px solid gray;
 			position: relative;
@@ -17,6 +17,9 @@
 			margin: 0 auto;
 			width: 600px;
 			height: 60px;
+		}
+		#intro {
+			height: 150px;
 		}
 		#scoreboard {
 			height: 20px;
@@ -171,6 +174,12 @@
 
 <body onload="init();">
 
+<div id="intro">
+	<h1>Missiles</h1>
+	<p>
+		Avoid incoming missiles and make as many passes as possible.
+	</p>
+</div>
 <div id="canvas">
 	<div id="plane"></div>
 	<div id="bomb-1"></div>
