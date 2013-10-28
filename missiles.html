@@ -109,10 +109,10 @@
 				if(planeLeft <= sizeX - 20) {
 					planeLeft += 20;
 				} else {
-					level++;
+					level+=100;
 					planeLeft = 0;
 				}
-			if(dir == "left") (planeLeft > 0) ? planeLeft -= 20 : planeLeft = sizeX;
+			if(dir == "left") (planeLeft > 0) ? planeLeft -= 20 : planeLeft = 0;
 
 			plane.style.top = planeTop + 'px';
 			plane.style.left = planeLeft + 'px';
